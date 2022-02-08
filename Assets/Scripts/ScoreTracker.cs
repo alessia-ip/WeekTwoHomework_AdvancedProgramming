@@ -16,7 +16,7 @@ public class ScoreTracker
 
    public Winner isRedScoreGreater()
    {
-      if (redScore > blueScore)
+      if (redScore < blueScore)
       {
          return Winner.Blue;
       } else if (redScore > blueScore)

@@ -24,20 +24,20 @@ public class StateManager : MonoBehaviour
     {
         Service.GameEventManagerInGame.OnGameStart();
         currentGameState = GameState.Game;
-        Debug.Log("Start The Game");
+
     }
 
     public void EndTheGame()
     {
         Service.GameEventManagerInGame.OnGameEnd();
         currentGameState = GameState.GameOver;
-        Debug.Log("End The Game");
+
     }
     
     public void Restart()
     {
         Service.GameEventManagerInGame.OnRestartGame();
-        Debug.Log("Restart The Game");
+  
     }
     
     

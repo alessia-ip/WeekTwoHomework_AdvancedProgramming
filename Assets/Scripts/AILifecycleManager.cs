@@ -12,22 +12,42 @@ public class AILifecycleManager
     public List<GameObject> aiInstances = new List<GameObject>();
 
     //this creates each instance of the AI
-    public void InstanceCreation(GameObject newInstance)
+    public void InstanceCreationRed()
     {
+        var newObj = Object.Instantiate(Service.GameManagerInGame.AiPrefabRed);
         //we pick a new random position on the x and z axes
         var newPosition = new Vector3(
             Random.Range(-Service.GameManagerInGame.gridSizeX, Service.GameManagerInGame.gridSizeX),
-            newInstance.transform.position.y,
+            newObj.transform.position.y,
             Random.Range(-Service.GameManagerInGame.gridSizeZ, Service.GameManagerInGame.gridSizeZ)
             );
         //then we set the prefab to that position
-        newInstance.transform.position = newPosition;
+        newObj.transform.position = newPosition;
         //we add the following components to the prefab
-        newInstance.AddComponent<AIClosestCollectable>();
-        newInstance.AddComponent<DestroyCollectable>();
+        newObj.AddComponent<AIClosestCollectable>();
+        newObj.AddComponent<DestroyCollectable>();
         // then we add this instance to out list of AI instances
-        aiInstances.Add(newInstance);
+        aiInstances.Add(newObj);
     }
+    
+    public void InstanceCreationBlue()
+    {
+        var newObj = Object.Instantiate(Service.GameManagerInGame.AiPrefabBlue);
+        //we pick a new random position on the x and z axes
+        var newPosition = new Vector3(
+            Random.Range(-Service.GameManagerInGame.gridSizeX, Service.GameManagerInGame.gridSizeX),
+            newObj.transform.position.y,
+            Random.Range(-Service.GameManagerInGame.gridSizeZ, Service.GameManagerInGame.gridSizeZ)
+        );
+        //then we set the prefab to that position
+        newObj.transform.position = newPosition;
+        //we add the following components to the prefab
+        newObj.AddComponent<AIClosestCollectable>();
+        newObj.AddComponent<DestroyCollectable>();
+        // then we add this instance to out list of AI instances
+        aiInstances.Add(newObj);
+    }
+
 
     //this is a function any AI can call to determine what the closest collectable is to it
     public void GetClosestCollectable(GameObject aiInstance)

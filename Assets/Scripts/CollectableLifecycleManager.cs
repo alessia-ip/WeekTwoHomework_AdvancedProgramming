@@ -12,8 +12,9 @@ public class CollectableLifecycleManager
     public List<GameObject> collectableInstances = new List<GameObject>();
 
     //we spawn collectables with this
-    public void SpawnCollectable(GameObject newCollectable)
+    public void SpawnCollectable( )
     {
+        var newCollectable = Object.Instantiate(Service.GameManagerInGame.collectablePrefab);
         //we generate a new random position in the play space
         var newPosition = new Vector3(
             Random.Range(-Service.GameManagerInGame.gridSizeX, Service.GameManagerInGame.gridSizeX),

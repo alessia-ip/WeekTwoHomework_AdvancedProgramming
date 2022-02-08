@@ -1,27 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 
     [Header("Number of Instances in Scene")]
-    public int NumberOfAiInstances;
-    public int NumberOfCollectables;
+    public static int NumberOfAiInstances = 10;
+    public static int NumberOfCollectables = 10;
 
     [Header("Size of the playing area")]
     public float gridSizeX;
     public float gridSizeZ;
     
     [Header("AI Related Parameters")]
-    public GameObject AiPrefabRed;
-    public GameObject AiPrefabBlue;
-    public float aiMoveSpeed;
+    public  GameObject AiPrefabRed;
+    public  GameObject AiPrefabBlue;
+    public static float aiMoveSpeed = 4;
     public float aiRotationSpeed;
 
     [Header("Collectables")]
-    public GameObject collectablePrefab;
+    public  GameObject collectablePrefab;
+    
+    public FiniteStateMachine<GameManager> _fsm;
     
     private void Awake()
     {
@@ -34,59 +38,22 @@ public class GameManager : MonoBehaviour
     {
         //Then we want the game manager to also be accessible in the services manager
         Service.GameManagerInGame = this;
-        Service.GameEventManagerInGame.OnGameStart += startGame;
-        Service.GameEventManagerInGame.OnGameEnd += EndingTheGame;
+        Service.GameEventManagerInGame.OnGameEnd += TransitionToEnd;
         Service.GameEventManagerInGame.OnGameStart += Service.ScoreTrackerInGame.ClearScore;
+        Service.GameEventManagerInGame.OnGameStart += TransitionToGame;
+        Service.GameEventManagerInGame.OnRestartGame += TransitionToTitle;
+        _fsm = new FiniteStateMachine<GameManager>(this);
+        _fsm.TransitionTo<State_Title>();
     }
 
     public void Update()
     {
-        //if there are ever 0 collectables, we want to spawn more into the scene
-        if (Service.CollectableManagerInGame.collectableInstances.Count == 0 && 
-            Service.StateManagerInGame.currentGameState == StateManager.GameState.Game)
-        {
-            SpawnNumberOfCollectables();
-        }
+        _fsm.Update();
     }
 
-    public void startGame()
-    {
-        //We instantiate all the AI we want in the game, based on the number indicated
-        for (int i = 0; i != NumberOfAiInstances; i++)
-        {
-            //We make a new copy of the AI Prefab
-            var newInstance = Instantiate<GameObject>(AiPrefabRed);
-            //After the prefab is instantiated, we run the instance creation function in our AI script
-            Service.AILifecycleManagerInGame.InstanceCreation(newInstance);
-        }
-        
-        for (int i = 0; i != NumberOfAiInstances - 1; i++)
-        {
-            //We make a new copy of the AI Prefab
-            var newInstance = Instantiate<GameObject>(AiPrefabBlue);
-            //After the prefab is instantiated, we run the instance creation function in our AI script
-            Service.AILifecycleManagerInGame.InstanceCreation(newInstance);
-        }
-
-        //Then we spawn the desired number of collectables
-        SpawnNumberOfCollectables();
-    }
-    
-    //This function is to spawn collectables into the scene, based on the number we defined
-    public void SpawnNumberOfCollectables()
-    {
-        //we instantiate a new collectable prefab
-        for (int i = 0; i != NumberOfCollectables; i++)
-        {
-            var newCollectable = Instantiate<GameObject>(collectablePrefab);
-            Service.CollectableManagerInGame.SpawnCollectable(newCollectable);
-        }
-    }
-    
     public void FixedUpdate()
     {
-        //We want the AI to move with the fixed update, for the physics
-        Service.AILifecycleManagerInGame.InstanceUpdatePosition(aiMoveSpeed);
+        
     }
 
     public void DestroyObject(GameObject ObjectToDestroy)
@@ -94,10 +61,110 @@ public class GameManager : MonoBehaviour
         Destroy(ObjectToDestroy); // then we destroy the gameobject
     }
 
-    public void EndingTheGame()
+    public void TransitionToTitle()
     {
-        Service.AILifecycleManagerInGame.DestroyGameObject();
-        Service.CollectableManagerInGame.destroyAllCollectables();
+        _fsm.TransitionTo<State_Title>();
     }
     
+    public void TransitionToEnd()
+    {
+        _fsm.TransitionTo<State_End>();
+    }
+    
+    public void TransitionToGame()
+    {
+        _fsm.TransitionTo<State_Game>();
+    }
+
+    
+    public abstract class BaseState : FiniteStateMachine<GameManager>.State
+    {
+        
+        
+        public override void OnEnter()
+        {
+            base.OnEnter();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+        }
+        
+    }
+
+    public class State_Title : BaseState
+    {
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            Debug.Log("Title");
+        }
+    }
+    
+    public class State_End : BaseState
+    {
+        public override void OnEnter()
+        {
+            Debug.Log("End");
+            base.OnEnter();
+            Service.AILifecycleManagerInGame.DestroyGameObject();
+            Service.CollectableManagerInGame.destroyAllCollectables();
+        }
+    }
+
+    public class State_Game : BaseState
+    {
+        public override void OnEnter()
+        {
+            Debug.Log("Game");
+            base.OnEnter();
+            startGame();
+            
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            //if there are ever 0 collectables, we want to spawn more into the scene
+            if (Service.CollectableManagerInGame.collectableInstances.Count == 0 )
+            {
+                SpawnNumberOfCollectables();
+            }
+
+            Service.AILifecycleManagerInGame.InstanceUpdatePosition(aiMoveSpeed);
+        }
+        
+   
+        
+        public void startGame()
+        {
+            //We instantiate all the AI we want in the game, based on the number indicated
+            for (int i = 0; i != NumberOfAiInstances; i++)
+            {
+                //After the prefab is instantiated, we run the instance creation function in our AI script
+                Service.AILifecycleManagerInGame.InstanceCreationRed();
+            }
+        
+            for (int i = 0; i != NumberOfAiInstances - 1; i++)
+            {
+                //After the prefab is instantiated, we run the instance creation function in our AI script
+                Service.AILifecycleManagerInGame.InstanceCreationBlue();
+            }
+
+            //Then we spawn the desired number of collectables
+            SpawnNumberOfCollectables();
+        }
+        
+        //This function is to spawn collectables into the scene, based on the number we defined
+        public void SpawnNumberOfCollectables()
+        {
+            //we instantiate a new collectable prefab
+            for (int i = 0; i != NumberOfCollectables; i++)
+            {
+                Service.CollectableManagerInGame.SpawnCollectable();
+            }
+        }
+    }
+
 }
