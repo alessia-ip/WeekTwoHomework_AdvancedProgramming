@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     public float gridSizeZ;
     
     [Header("AI Related Parameters")]
-    public GameObject AiPrefab;
+    public GameObject AiPrefabRed;
+    public GameObject AiPrefabBlue;
     public float aiMoveSpeed;
     public float aiRotationSpeed;
 
@@ -38,7 +39,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i != NumberOfAiInstances; i++)
         {
             //We make a new copy of the AI Prefab
-            var newInstance = Instantiate<GameObject>(AiPrefab);
+            var newInstance = Instantiate<GameObject>(AiPrefabRed);
+            //After the prefab is instantiated, we run the instance creation function in our AI script
+            Service.AILifecycleManagerInGame.InstanceCreation(newInstance);
+        }
+        
+        for (int i = 0; i != NumberOfAiInstances - 1; i++)
+        {
+            //We make a new copy of the AI Prefab
+            var newInstance = Instantiate<GameObject>(AiPrefabBlue);
             //After the prefab is instantiated, we run the instance creation function in our AI script
             Service.AILifecycleManagerInGame.InstanceCreation(newInstance);
         }

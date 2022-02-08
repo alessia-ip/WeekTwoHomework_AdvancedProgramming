@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 7558433282025445732}
   - component: {fileID: 7558433282025445728}
   m_Layer: 0
-  m_Name: AIPlayerCapsule
-  m_TagString: Untagged
+  m_Name: AIPlayerCapsule_R
+  m_TagString: Red
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

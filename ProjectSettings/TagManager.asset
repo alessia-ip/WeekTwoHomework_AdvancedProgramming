@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Collectable
+  - Red
+  - Blue
   layers:
   - Default
   - TransparentFX

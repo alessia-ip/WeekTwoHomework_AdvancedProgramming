@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public static class Service
 {
@@ -9,12 +10,14 @@ public static class Service
     public static GameManager GameManagerInGame;
     public static CollectableLifecycleManager CollectableManagerInGame;
     public static AILifecycleManager AILifecycleManagerInGame;
+    public static ScoreTracker ScoreTrackerInGame;
     
     //We have stuff to initialize here
     public static void InitializationService()
     {
         Service.AILifecycleManagerInGame = new AILifecycleManager();
         Service.CollectableManagerInGame = new CollectableLifecycleManager();
+        Service.ScoreTrackerInGame = new ScoreTracker();
     }
     
 }
