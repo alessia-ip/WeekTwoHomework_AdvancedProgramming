@@ -15,6 +15,7 @@ public class UiManager : MonoBehaviour
         Service.UiManagerInGame = this;
         Service.GameEventManagerInGame.OnGameStart += CloseStartMenu;
         Service.GameEventManagerInGame.OnGameEnd += OpenEndMenu;
+        Service.GameEventManagerInGame.OnGameEnd += UpdateScore;
         Service.GameEventManagerInGame.OnRestartGame += CloseEndMenu;
         Service.GameEventManagerInGame.OnRestartGame += OpenStartMenu;
     }
@@ -34,5 +35,29 @@ public class UiManager : MonoBehaviour
     public void OpenEndMenu()
     {
         EndMenu.SetActive(true);
+    }
+
+    public void UpdateScore()
+    {
+        string whoWon;
+        if (Service.ScoreTrackerInGame.isRedScoreGreater() == ScoreTracker.Winner.Blue)
+        {
+            whoWon = "\nBlue team wins!";
+        } else if (Service.ScoreTrackerInGame.isRedScoreGreater() == ScoreTracker.Winner.Red)
+        {
+            whoWon = "\nRed team wins!";
+        }
+        else
+        {
+            whoWon = "\nIt's a tie!";
+        }
+
+        string endText = "Red team: " +
+                         Service.ScoreTrackerInGame.redScore +
+                         " | Blue team: " +
+                         Service.ScoreTrackerInGame.blueScore +
+                         whoWon;
+        
+        scoreText.text = endText;
     }
 }

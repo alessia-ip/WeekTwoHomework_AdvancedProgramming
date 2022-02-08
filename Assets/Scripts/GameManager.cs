@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         Service.GameManagerInGame = this;
         Service.GameEventManagerInGame.OnGameStart += startGame;
         Service.GameEventManagerInGame.OnGameEnd += EndingTheGame;
+        Service.GameEventManagerInGame.OnGameStart += Service.ScoreTrackerInGame.ClearScore;
     }
 
     public void Update()
