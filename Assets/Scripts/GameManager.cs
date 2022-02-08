@@ -35,12 +35,14 @@ public class GameManager : MonoBehaviour
         //Then we want the game manager to also be accessible in the services manager
         Service.GameManagerInGame = this;
         Service.GameEventManagerInGame.OnGameStart += startGame;
+        Service.GameEventManagerInGame.OnGameEnd += EndingTheGame;
     }
 
     public void Update()
     {
         //if there are ever 0 collectables, we want to spawn more into the scene
-        if (Service.CollectableManagerInGame.collectableInstances.Count == 0)
+        if (Service.CollectableManagerInGame.collectableInstances.Count == 0 && 
+            Service.StateManagerInGame.currentGameState == StateManager.GameState.Game)
         {
             SpawnNumberOfCollectables();
         }
@@ -89,6 +91,12 @@ public class GameManager : MonoBehaviour
     public void DestroyObject(GameObject ObjectToDestroy)
     {
         Destroy(ObjectToDestroy); // then we destroy the gameobject
+    }
+
+    public void EndingTheGame()
+    {
+        Service.AILifecycleManagerInGame.DestroyGameObject();
+        Service.CollectableManagerInGame.destroyAllCollectables();
     }
     
 }

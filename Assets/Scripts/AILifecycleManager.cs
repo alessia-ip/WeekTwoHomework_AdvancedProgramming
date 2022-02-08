@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class AILifecycleManager
@@ -87,5 +88,13 @@ public class AILifecycleManager
             InstanceUpdateDirection(RequestingAiInstance, closestCollectable);
         }
     }
-    
+
+    public void DestroyGameObject()
+    {
+        for (int i = 0; i < aiInstances.Count; i++)
+        {
+            Object.Destroy(aiInstances[i]);
+        }
+        aiInstances.Clear();
+    }
 }

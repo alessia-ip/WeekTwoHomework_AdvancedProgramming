@@ -11,12 +11,32 @@ public class GameTimer : MonoBehaviour
     void Start()
     {
         Service.GameTimerInGame = this;
-        currentGameTime = 0;
+        resetTimerTime();
+        Service.GameEventManagerInGame.OnRestartGame += resetTimerTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        currentGameTime = currentGameTime + Time.deltaTime;
+        if (Service.StateManagerInGame.currentGameState == StateManager.GameState.Game)
+        {
+            IncrememntTime();
+        }
     }
+
+    void resetTimerTime()
+    {
+        currentGameTime = 0;
+    }
+
+    void IncrememntTime()
+    {
+        currentGameTime = currentGameTime + Time.deltaTime;
+        if (currentGameTime >= maximumGameTime)
+        {
+            Service.StateManagerInGame.EndTheGame();
+        }
+    }
+    
+    
 }

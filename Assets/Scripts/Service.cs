@@ -14,6 +14,7 @@ public static class Service
     public static GameTimer GameTimerInGame;
     public static GameEventManager GameEventManagerInGame;
     public static UiManager UiManagerInGame;
+    public static StateManager StateManagerInGame;
     
     //We have stuff to initialize here
     public static void InitializationService()

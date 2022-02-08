@@ -29,10 +29,10 @@ public class UiManager : MonoBehaviour
     }
     public void CloseEndMenu()
     {
-        StartMenu.SetActive(false);
+        EndMenu.SetActive(false);
     }
     public void OpenEndMenu()
     {
-        StartMenu.SetActive(true);
+        EndMenu.SetActive(true);
     }
 }

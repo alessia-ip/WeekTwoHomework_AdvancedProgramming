@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class CollectableLifecycleManager
@@ -40,6 +41,16 @@ public class CollectableLifecycleManager
                 return; //and then we escape this since we found what we needed and don't need to cycle through the rest of the list
             }
         }
+    }
+
+    public void destroyAllCollectables()
+    {
+        for (int i = 0; i < collectableInstances.Count; i++)
+        {
+            Object.Destroy(collectableInstances[i]);
+        }
+
+        collectableInstances.Clear();
     }
     
 }

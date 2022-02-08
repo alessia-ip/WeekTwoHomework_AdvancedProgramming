@@ -15,8 +15,8 @@ public class DestroyCollectable : MonoBehaviour
         {
             Service.CollectableManagerInGame.destroyCollectable(other.gameObject);
             Service.ScoreTrackerInGame.AddToScore(this.gameObject);
-            Debug.Log("Red score:" +Service.ScoreTrackerInGame.redScore);
-            Debug.Log("Blue score:" +Service.ScoreTrackerInGame.blueScore);
+           // Debug.Log("Red score:" +Service.ScoreTrackerInGame.redScore);
+           // Debug.Log("Blue score:" +Service.ScoreTrackerInGame.blueScore);
         }
     }
 }
