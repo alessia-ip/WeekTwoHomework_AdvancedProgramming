@@ -13,6 +13,7 @@ public static class Service
     public static ScoreTracker ScoreTrackerInGame;
     public static GameTimer GameTimerInGame;
     public static GameEventManager GameEventManagerInGame;
+    public static UiManager UiManagerInGame;
     
     //We have stuff to initialize here
     public static void InitializationService()

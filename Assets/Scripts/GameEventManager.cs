@@ -6,9 +6,15 @@ public class GameEventManager : MonoBehaviour
 {
     public delegate void GameStart();
     public GameStart OnGameStart;
+
+    public delegate void GameEnd(); 
+    public GameEnd OnGameEnd;
+    
+    public delegate void RestartGame(); 
+    public RestartGame OnRestartGame;
     
     // Update is called once per frame
-    void Start()
+    void Awake()
     {
         Service.GameEventManagerInGame = this;
     }

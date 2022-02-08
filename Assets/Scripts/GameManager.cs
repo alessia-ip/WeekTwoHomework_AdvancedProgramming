@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     {
         //Then we want the game manager to also be accessible in the services manager
         Service.GameManagerInGame = this;
-
         Service.GameEventManagerInGame.OnGameStart += startGame;
     }
 
