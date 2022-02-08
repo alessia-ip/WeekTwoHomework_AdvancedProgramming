@@ -35,6 +35,20 @@ public class GameManager : MonoBehaviour
         //Then we want the game manager to also be accessible in the services manager
         Service.GameManagerInGame = this;
 
+        Service.GameEventManagerInGame.OnGameStart += startGame;
+    }
+
+    public void Update()
+    {
+        //if there are ever 0 collectables, we want to spawn more into the scene
+        if (Service.CollectableManagerInGame.collectableInstances.Count == 0)
+        {
+            SpawnNumberOfCollectables();
+        }
+    }
+
+    public void startGame()
+    {
         //We instantiate all the AI we want in the game, based on the number indicated
         for (int i = 0; i != NumberOfAiInstances; i++)
         {
@@ -55,16 +69,7 @@ public class GameManager : MonoBehaviour
         //Then we spawn the desired number of collectables
         SpawnNumberOfCollectables();
     }
-
-    public void Update()
-    {
-        //if there are ever 0 collectables, we want to spawn more into the scene
-        if (Service.CollectableManagerInGame.collectableInstances.Count == 0)
-        {
-            SpawnNumberOfCollectables();
-        }
-    }
-
+    
     //This function is to spawn collectables into the scene, based on the number we defined
     public void SpawnNumberOfCollectables()
     {

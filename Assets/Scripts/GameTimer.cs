@@ -10,6 +10,7 @@ public class GameTimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Service.GameTimerInGame = this;
         currentGameTime = 0;
     }
 

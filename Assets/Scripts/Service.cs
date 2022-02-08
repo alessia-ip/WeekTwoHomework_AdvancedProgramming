@@ -11,6 +11,8 @@ public static class Service
     public static CollectableLifecycleManager CollectableManagerInGame;
     public static AILifecycleManager AILifecycleManagerInGame;
     public static ScoreTracker ScoreTrackerInGame;
+    public static GameTimer GameTimerInGame;
+    public static GameEventManager GameEventManagerInGame;
     
     //We have stuff to initialize here
     public static void InitializationService()
