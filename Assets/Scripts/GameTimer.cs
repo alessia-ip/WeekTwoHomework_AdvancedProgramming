@@ -18,7 +18,7 @@ public class GameTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Service.StateManagerInGame.currentGameState == StateManager.GameState.Game)
+        if (Service.StateManagerInGame.currentGameState == StateManager.GameState.Game) // we only want to increment when the game is playing
         {
             IncrememntTime();
         }
@@ -32,7 +32,7 @@ public class GameTimer : MonoBehaviour
     void IncrememntTime()
     {
         currentGameTime = currentGameTime + Time.deltaTime;
-        if (currentGameTime >= maximumGameTime)
+        if (currentGameTime >= maximumGameTime) //when the timer has hit the max time, we want to stop!
         {
             Service.StateManagerInGame.EndTheGame();
         }

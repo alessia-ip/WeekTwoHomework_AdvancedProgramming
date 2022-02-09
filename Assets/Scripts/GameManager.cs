@@ -61,6 +61,8 @@ public class GameManager : MonoBehaviour
         Destroy(ObjectToDestroy); // then we destroy the gameobject
     }
 
+    
+    //we put our _fsm transitions here to make it easier to trigger using the event manager
     public void TransitionToTitle()
     {
         _fsm.TransitionTo<State_Title>();
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
         _fsm.TransitionTo<State_Game>();
     }
 
-    
+    // there's nothing we really need to call from the base state
     public abstract class BaseState : FiniteStateMachine<GameManager>.State
     {
         
@@ -93,6 +95,7 @@ public class GameManager : MonoBehaviour
         
     }
 
+    //we just want to know what state we're in for easy debugging
     public class State_Title : BaseState
     {
         public override void OnEnter()
@@ -102,17 +105,21 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    //this is for when we end the game
     public class State_End : BaseState
     {
         public override void OnEnter()
         {
             Debug.Log("End");
             base.OnEnter();
+            
+            //we want to get rid of all the game objects so they can be spawned in anew when we restart
             Service.AILifecycleManagerInGame.DestroyGameObject();
             Service.CollectableManagerInGame.destroyAllCollectables();
         }
     }
 
+    //this is for while the game is running
     public class State_Game : BaseState
     {
         public override void OnEnter()

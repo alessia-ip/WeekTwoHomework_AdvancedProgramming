@@ -14,6 +14,7 @@ public class ScoreTracker
    public int redScore = 0;
    public int blueScore = 0;
 
+   //this is so we know who wins, and how to score at the end
    public Winner isRedScoreGreater()
    {
       if (redScore < blueScore)
@@ -35,6 +36,7 @@ public class ScoreTracker
       blueScore = 0;
    }
 
+   //we add points based on which team scored
    public void AddToScore(GameObject playerThatScored)
    {
       if (playerThatScored.tag == "Red")
